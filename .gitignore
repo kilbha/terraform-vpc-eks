@@ -1,0 +1,8 @@
+.terraform.lock.hcl
+.terraform/terraform.tfstate
+.terraform/modules/modules.json
+.terraform/providers/registry.terraform.io/hashicorp/aws/5.49.0/linux_amd64/LICENSE.txt
+.terraform/providers/registry.terraform.io/hashicorp/aws/5.49.0/linux_amd64/terraform-provider-aws_v5.49.0_x5
+.terraform/*
+installations/awscliv2.zip
+installations/*
