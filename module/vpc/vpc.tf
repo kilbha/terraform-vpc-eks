@@ -91,6 +91,26 @@ resource "aws_nat_gateway" "ngw" {
   depends_on = [aws_eip.ngw-eip]
 }
 
+resource "aws_route_table" "main_rt" {
+  vpc_id = aws_vpc.vpc_eks_vpc.id
+
+  route  {
+    cidr_block = var.cidr_block
+    gateway_id = "local"
+  }
+
+  depends_on = [ aws_vpc.vpc_eks_vpc ]
+
+  tags = {
+    Name = "kilbha_vpc_rt"
+  }
+}
+
+resource "aws_main_route_table_association" "main_rta" {
+  vpc_id         = aws_vpc.vpc_eks_vpc.id
+  route_table_id = aws_route_table.main_rt.id
+}
+
 resource "aws_route_table" "pvt_rt" {
   vpc_id = aws_vpc.vpc_eks_vpc.id
 
@@ -123,6 +143,31 @@ resource "aws_security_group" "eks-cluster-sg" {
   ingress {
     from_port   = 443
     to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] // It should be specific IP range
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = var.eks-sg
+  }
+}
+
+resource "aws_security_group" "jumpserver-sg" {
+  name        = "jumpserver-sg"
+  
+
+  vpc_id = aws_vpc.vpc_eks_vpc.id
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"] // It should be specific IP range
   }
