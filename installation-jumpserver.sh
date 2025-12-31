@@ -48,5 +48,11 @@ sudo apt-get update
 sudo apt-get install helm
 
 
+echo "########### INSTALL DOCKER #############"
+sudo apt update
+sudo apt install docker.io -y
+sudo systemctl enable docker
 
+sudo usermod -aG docker ubuntu
+sudo chmod 777 /var/run/docker.sock
 
