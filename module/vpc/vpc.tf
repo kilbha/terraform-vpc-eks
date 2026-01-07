@@ -184,6 +184,45 @@ resource "aws_security_group" "jumpserver-sg" {
   }
 }
 
+resource "aws_security_group" "jenkins-sg" {
+  name        = "jenkins-sg"
+  
+
+  vpc_id = aws_vpc.vpc_eks_vpc.id
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] // It should be specific IP range
+  }
+
+  ingress {
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] // It should be specific IP range
+  }
+
+  ingress {
+    from_port   = 9000
+    to_port     = 9000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] // It should be specific IP range
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = var.eks-sg
+  }
+}
+
 resource "aws_security_group" "eks_node_sg" {
   name   = "${var.cluster-name}-nodes-sg"
   vpc_id = aws_vpc.vpc_eks_vpc.id
