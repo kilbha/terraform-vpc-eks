@@ -28,6 +28,10 @@ variable "cluster-name" {
   
 }
 
+variable "node-group-ami-version" {
+  
+}
+
 variable "addons" {
   type = list(object({
     name    = string

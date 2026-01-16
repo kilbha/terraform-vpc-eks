@@ -16,6 +16,7 @@ resource "aws_eks_node_group" "ondemand" {
   cluster_name    = aws_eks_cluster.eks.name
   node_group_name = "${var.cluster-name}-ondemand"  
   node_role_arn   = aws_iam_role.eks_node_role.arn
+  release_version = var.node-group-ami-version
 
   subnet_ids      = [aws_subnet.pvt_subnet[0].id, aws_subnet.pvt_subnet[1].id, aws_subnet.pvt_subnet[2].id]
   instance_types  = var.ondemand_instance_types

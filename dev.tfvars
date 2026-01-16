@@ -18,6 +18,7 @@ onspot_instance_types   = ["t3.medium"]
 endpoint_private_access = true
 endpoint_public_access  = false
 cluster-version         = "1.33"
+node-group-ami-version  = "1.33.5-20260107"
 addons = [
   {
     name    = "vpc-cni",
