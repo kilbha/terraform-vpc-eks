@@ -22,19 +22,19 @@ node-group-ami-version  = "1.33.5-20260107"
 addons = [
   {
     name    = "vpc-cni",
-    version = "v1.20.0-eksbuild.1"
+    version = "v1.21.1-eksbuild.1"
   },
   {
     name    = "coredns"
-    version = "v1.12.2-eksbuild.4"
+    version = "v1.12.4-eksbuild.1"
   },
   {
     name    = "kube-proxy"
-    version = "v1.33.0-eksbuild.2"
+    version = "v1.33.7-eksbuild.2"
   },
   {
     name    = "aws-ebs-csi-driver"
-    version = "v1.46.0-eksbuild.1"
+    version = "v1.54.0-eksbuild.1"
   }
   # Add more addons as needed
 ]

@@ -48,6 +48,10 @@ variable "ondemand_instance_types" {
 
 }
 
+variable "node-group-ami-version" {
+  
+}
+
 variable "addons" {
   type = list(object({
     name    = string

@@ -21,4 +21,5 @@ module "vpc" {
   ondemand_instance_types = var.ondemand_instance_types
   onspot_instance_types   = var.onspot_instance_types
   addons                  = var.addons
+  node-group-ami-version = var.node-group-ami-version
 }
