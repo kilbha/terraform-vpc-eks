@@ -17,8 +17,8 @@ ondemand_instance_types = ["t3.medium"]
 onspot_instance_types   = ["t3.medium"]
 endpoint_private_access = true
 endpoint_public_access  = false
-cluster-version         = "1.33"
-node-group-ami-version  = "1.33.5-20260107"
+cluster-version         = "1.34"
+node-group-ami-version  = "1.34.2-20260114"
 addons = [
   {
     name    = "vpc-cni",
@@ -34,7 +34,7 @@ addons = [
   },
   {
     name    = "aws-ebs-csi-driver"
-    version = "v1.54.0-eksbuild.1"
+    version = "v1.47.1-eksbuild.1"
   }
   # Add more addons as needed
 ]
