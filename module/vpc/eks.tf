@@ -35,6 +35,8 @@ resource "aws_eks_node_group" "spot" {
   cluster_name    = aws_eks_cluster.eks.name
   node_group_name = "${var.cluster-name}-spot"
   node_role_arn   = aws_iam_role.eks_node_role.arn
+  # Force the update if pods are stuck
+  force_update_version = true
   release_version = var.node-group-ami-version
 
   subnet_ids      = [aws_subnet.pvt_subnet[0].id, aws_subnet.pvt_subnet[1].id, aws_subnet.pvt_subnet[2].id]
@@ -58,6 +60,8 @@ resource "aws_eks_addon" "eks-addons" {
   cluster_name  = aws_eks_cluster.eks.name
   addon_name    = each.value.name
   addon_version = each.value.version
+  # # Use this to override conflicts during updates
+  # resolve_conflicts_on_update = "OVERWRITE"
 
   depends_on = [
     aws_eks_node_group.ondemand,

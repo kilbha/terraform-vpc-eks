@@ -6,3 +6,6 @@
 .terraform/*
 installations/awscliv2.zip
 installations/*
+images/*
+tfplan (2)/*
+tfplan

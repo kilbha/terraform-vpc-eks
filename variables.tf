@@ -49,7 +49,7 @@ variable "ondemand_instance_types" {
 }
 
 variable "node-group-ami-version" {
-  
+
 }
 
 variable "addons" {
