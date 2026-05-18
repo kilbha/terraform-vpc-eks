@@ -11,5 +11,6 @@ resource "aws_instance" "kilbha_instance1" {
 
   tags = {
     Name = "kilbha_instance"
+    Project = var.cluster-name
   }
 }

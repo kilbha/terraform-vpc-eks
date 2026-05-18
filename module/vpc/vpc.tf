@@ -15,6 +15,7 @@ resource "aws_subnet" "pub_subnet" {
 
   tags = {
     Name = "pub_subnet-kilbha"
+    Project = var.cluster-name
   }
 
   depends_on = [aws_vpc.vpc_eks_vpc]
@@ -25,6 +26,7 @@ resource "aws_internet_gateway" "vpc_eks_ig" {
 
   tags = {
     Name = "ig-kilbha"
+    Project = var.cluster-name
   }
 
   depends_on = [aws_vpc.vpc_eks_vpc]
@@ -40,6 +42,7 @@ resource "aws_route_table" "public_rt" {
 
   tags = {
     Name = "public_rt_kilbha"
+    Project = var.cluster-name
   }
 
   depends_on = [aws_vpc.vpc_eks_vpc]
@@ -62,33 +65,40 @@ resource "aws_subnet" "pvt_subnet" {
 
   tags = {
     Name = "pvt_subnet_kilbha"
+    Project = var.cluster-name
   }
 
   depends_on = [aws_vpc.vpc_eks_vpc]
 }
 
-resource "aws_eip" "ngw-eip" {
+resource "aws_eip" "ngw_eip" {
+  count = 3
+
   domain = "vpc"
 
   tags = {
-    Name = var.eip-ngw
+    Name = "ngw-eip-${count.index + 1}"
+    Project = var.cluster-name
   }
 
   depends_on = [aws_vpc.vpc_eks_vpc
   ]
-
 }
 
+
+
 resource "aws_nat_gateway" "ngw" {
-  allocation_id = aws_eip.ngw-eip.id
-  subnet_id     = aws_subnet.pub_subnet[0].id
+  count = 3
+
+  allocation_id = aws_eip.ngw_eip[count.index].id
+  subnet_id     = aws_subnet.pub_subnet[count.index].id
 
   tags = {
-    Name = var.ngw
+    Name = "nat-gateway-${count.index + 1}"
+    Project = var.cluster-name
   }
 
-
-  depends_on = [aws_eip.ngw-eip]
+  depends_on = [aws_eip.ngw_eip]
 }
 
 resource "aws_route_table" "main_rt" {
@@ -103,6 +113,7 @@ resource "aws_route_table" "main_rt" {
 
   tags = {
     Name = "kilbha_vpc_rt"
+    Project = var.cluster-name
   }
 }
 
@@ -111,27 +122,33 @@ resource "aws_main_route_table_association" "main_rta" {
   route_table_id = aws_route_table.main_rt.id
 }
 
+
+
+# Private Route Tables
 resource "aws_route_table" "pvt_rt" {
+  count = 3
+
   vpc_id = aws_vpc.vpc_eks_vpc.id
 
   route {
     cidr_block     = var.internet
-    nat_gateway_id = aws_nat_gateway.ngw.id
+    nat_gateway_id = aws_nat_gateway.ngw[count.index].id
   }
 
   tags = {
-    Name = "pvt_rt_kilbha"
+    Name    = "pvt-rt-${count.index + 1}"
+    Project = var.cluster-name
   }
 
   depends_on = [aws_vpc.vpc_eks_vpc]
 }
 
+# Associate each private subnet with its route table
 resource "aws_route_table_association" "pvt_rta" {
-  count          = var.pvt_subnet_count
-  route_table_id = aws_route_table.pvt_rt.id
-  subnet_id      = aws_subnet.pvt_subnet[count.index].id
+  count = 3
 
-  depends_on = [aws_subnet.pvt_subnet]
+  subnet_id      = aws_subnet.pvt_subnet[count.index].id
+  route_table_id = aws_route_table.pvt_rt[count.index].id
 }
 
 resource "aws_security_group" "eks-cluster-sg" {
@@ -156,6 +173,7 @@ resource "aws_security_group" "eks-cluster-sg" {
 
   tags = {
     Name = var.eks-sg
+    Project = var.cluster-name
   }
 }
 
@@ -181,6 +199,7 @@ resource "aws_security_group" "jumpserver-sg" {
 
   tags = {
     Name = var.eks-sg
+    Project = var.cluster-name
   }
 }
 
@@ -220,6 +239,7 @@ resource "aws_security_group" "jenkins-sg" {
 
   tags = {
     Name = var.eks-sg
+    Project = var.cluster-name
   }
 }
 
@@ -242,5 +262,5 @@ resource "aws_security_group" "eks_node_sg" {
     security_groups = [aws_security_group.eks-cluster-sg.id]
   }
 
-  tags = { Name = "${var.cluster-name}-node-sg" }
+  tags = { Name = "${var.cluster-name}-node-sg", Project = var.cluster-name }
 }

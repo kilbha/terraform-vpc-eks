@@ -12,9 +12,27 @@ ngw                    = "nat-gateway-kilbha"
 vpc-name               = "kilbha"
 eks-sg                 = "eks-sg-kilbha"
 
-cluster-name            = "vpc-eks"
-ondemand_instance_types = ["t3.medium"]
-onspot_instance_types   = ["t3.medium"]
+cluster-name = "vpc-eks"
+ondemand_instance_types = [
+  # "t3.medium",
+  # "t3.large",
+  "m6i.large",
+  "m6i.xlarge",
+  "c6i.large",
+  "c6i.xlarge",
+  "r6i.large",
+  "r6i.xlarge"
+]
+onspot_instance_types = [
+  # "t3.medium",
+  # "t3.large",
+  "m6i.large",
+  "m6i.xlarge",
+  "c6i.large",
+  "c6i.xlarge",
+  "r6i.large",
+  "r6i.xlarge"
+]
 endpoint_private_access = true
 endpoint_public_access  = false
 cluster-version         = "1.34"
@@ -38,3 +56,34 @@ addons = [
   }
   # Add more addons as needed
 ]
+
+
+# General Production Workloads
+# instance_types = ["m6i.large"]
+
+# Medium Scale Production / Kubernetes
+# instance_types = ["m6i.xlarge"]
+
+# CPU Intensive Applications
+# instance_types = ["c6i.large"]
+
+# High Performance Compute
+# instance_types = ["c6i.xlarge"]
+
+# Memory Heavy Applications (Redis, Elasticsearch)
+# instance_types = ["r6i.large"]
+
+# Large Memory Production Workloads
+# instance_types = ["r6i.xlarge"]
+
+# Cost Optimized Modern ARM Instances
+# instance_types = ["m7g.large"]
+
+# ARM Based Medium Scale Production
+# instance_types = ["m7g.xlarge"]
+
+# Cheap Startup / Small Production
+# instance_types = ["t3.medium"]
+
+# Slightly Better Burstable Production
+# instance_types = ["t3.large"]

@@ -17,5 +17,6 @@ resource "aws_instance" "jenkins_instance" {
 
   tags = {
     Name = "jenkins_instance"
+    Project = var.cluster-name
   }
 }
